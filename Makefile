@@ -25,8 +25,8 @@ $(APPFILES) : $(TARGETDIR)/%.app: $(SOURCEDIR)/%.app
 	@echo "Copying application $*"
 	@cp $(SOURCEDIR)/*.app $(TARGETDIR)
 
-e :
-	erl -pa $(SOURCEDIR) -noinput +b -eval 'case make:all() of up_to_date -> halt(0); error -> halt(1) end.'
+e : $(TARGETDIR)
+	@erl -noinput -eval 'case make:all() of up_to_date -> halt(0); _ -> halt(1) end.'
 
 clean :
 	@if [ -d $(TARGETDIR) ]; then \
