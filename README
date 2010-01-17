@@ -1,1 +1,3 @@
 Makefile is handy. It compiles stuff in src and puts beams in ebin.
+
+Emakefile is pretty basic. Works with `make e`. It's smarter about recompiling when includes are updated.
