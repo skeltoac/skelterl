@@ -11,7 +11,7 @@ INCLUDES := $(wildcard $(INCLUDEDIR)/*.hrl)
 TARGETS  := $(patsubst %,$(TARGETDIR)/%.beam,$(MODULES))
 APPFILES := $(patsubst %,$(TARGETDIR)/%.app,$(APPS))
 
-all : $(TARGETDIR) $(TARGETS) $(APPFILES)
+all : $(TARGETDIR) $(APPFILES) $(TARGETS)
 
 $(TARGETDIR) :
 	@echo "Creating target directory $(TARGETDIR)"
@@ -23,9 +23,9 @@ $(TARGETS) : $(TARGETDIR)/%.beam: $(SOURCEDIR)/%.erl $(INCLUDES)
 
 $(APPFILES) : $(TARGETDIR)/%.app: $(SOURCEDIR)/%.app
 	@echo "Copying application $*"
-	@cp $(SOURCEDIR)/*.app $(TARGETDIR)
+	@cp $< $@
 
-e : $(TARGETDIR)
+e : $(TARGETDIR) $(APPFILES)
 	@erl -noinput -eval 'case make:all() of up_to_date -> halt(0); _ -> halt(1) end.'
 
 clean :
@@ -36,3 +36,4 @@ clean :
 	 else \
 		echo "Nothing to clean."; \
 	 fi
+	@rm -f erl_crash.dump
